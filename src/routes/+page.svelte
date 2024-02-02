@@ -3,6 +3,8 @@
     import Icon from '$lib/Icon.svelte';
     import EmptyCell from '$lib/EmptyCell.svelte';
     import { tick } from 'svelte';
+    import { goto } from '$app/navigation';
+    import { redirect } from '@sveltejs/kit';
 
 	let board = getEmptyBoard();
 
@@ -43,6 +45,7 @@
 
 	function getGameState(winner: Move | undefined, board: Move[][]) {
 		if (winner) {
+            
 			return State.Won;
 		} else if (board.every((row) => row.every((col) => col !== Move.Empty))) {
 			return State.Draw;
@@ -56,9 +59,9 @@
     <div class="board" bind:this={boardErrasdsa}>
         {#each board as row, r}
             {#each row as col, c}
-                <div class="bg-slate-900 h-[100px] flex flex-col justify-center items-center rounded-md">
+                <div class="bg-slate-900 border-4 border-slate-900 hover:border-blue-950 transition-colors h-[100px] flex flex-col justify-center items-center rounded-md" >
                     {#if col !== Move.Empty}
-                        <Icon move={col} />
+                        <Icon move={col}  />
                     {:else}
                         <EmptyCell on:click={() => place(r, c)} disabled={state !== State.Playing}>
                             <span class="hidden">{r + 1} {c + 1}</span>
